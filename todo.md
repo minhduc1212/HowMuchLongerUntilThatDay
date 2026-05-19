@@ -1,0 +1,1 @@
+the web can be installed like an app
