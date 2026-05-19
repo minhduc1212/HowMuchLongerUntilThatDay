@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOW MUCH LONGER?</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HOW MUCH LONGER UNTIL THAT DAY?</h1>
+        </header>
+        
+        <main>
+            <div class="input-group">
+                <input type="date" id="targetDate" class="brutalist-input">
+                <div class="mode-toggle">
+                    <button id="modeDays" class="brutalist-btn active">DAYS</button>
+                    <button id="modeWeeks" class="brutalist-btn">WEEKS</button>
+                    <button id="modeSpecific" class="brutalist-btn">SPECIFIC</button>
+                </div>
+            </div>
+
+            <div id="daySelectorContainer" class="input-group hidden">
+                <select id="specificDaySelect" class="brutalist-input">
+                    <option value="Monday">MONDAY</option>
+                    <option value="Tuesday">TUESDAY</option>
+                    <option value="Wednesday">WEDNESDAY</option>
+                    <option value="Thursday">THURSDAY</option>
+                    <option value="Friday">FRIDAY</option>
+                    <option value="Saturday">SATURDAY</option>
+                    <option value="Sunday">SUNDAY</option>
+                </select>
+            </div>
+
+            <div id="resultDisplay" class="result-container">
+                <span class="label">REMAINING:</span>
+                <div id="countValue" class="count-value">...</div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="status-bar">
+            </div>
+        </footer>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>
