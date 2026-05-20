@@ -6,8 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const daySelectorContainer = document.getElementById('daySelectorContainer');
     const specificDaySelect = document.getElementById('specificDaySelect');
     const countValue = document.getElementById('countValue');
+    const statusBar = document.querySelector('.status-bar');
 
     let currentMode = 'days'; // default
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/static/sw.js')
+                .then(reg => console.log('SW Registered', reg))
+                .catch(err => console.log('SW Registration Failed', err));
+        });
+    }
 
     // Load from cookies
     const loadState = () => {
@@ -58,6 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const updateOnlineStatus = () => {
+        statusBar.innerText = navigator.onLine ? '' : 'OFFLINE MODE';
+    };
+
     const calculate = async () => {
         const date2 = targetDateInput.value;
         if (!date2) return;
@@ -84,9 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             typeWriterEffect(result.toString());
             saveState();
+            updateOnlineStatus();
         } catch (error) {
             console.error('Fetch error:', error);
-            countValue.innerText = 'ERR';
+            updateOnlineStatus();
+            // If offline, we might still have the typewriter effect from a previous successful load
+            // Or the service worker might have returned a cached response
         }
     };
 
@@ -102,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 50);
     };
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
 
     targetDateInput.addEventListener('change', calculate);
     specificDaySelect.addEventListener('change', calculate);
@@ -127,4 +147,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial load
     loadState();
     calculate();
+    updateOnlineStatus();
 });
