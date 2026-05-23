@@ -72,11 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
         statusBar.innerText = navigator.onLine ? '' : 'OFFLINE MODE';
     };
 
+    const getLocalDateString = (tz) => {
+        const now = new Date();
+        try {
+            const options = { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' };
+            const parts = new Intl.DateTimeFormat('en-US', options).formatToParts(now);
+            const year = parts.find(p => p.type === 'year').value;
+            const month = parts.find(p => p.type === 'month').value;
+            const day = parts.find(p => p.type === 'day').value;
+            return `${year}-${month}-${day}`;
+        } catch (e) {
+            return now.toISOString().split('T')[0];
+        }
+    };
+
     const calculate = async () => {
         const date2 = targetDateInput.value;
         if (!date2) return;
 
-        const date1 = new Date().toISOString().split('T')[0];
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const date1 = getLocalDateString(tz);
         let endpoint = 'days_between';
         let params = `date1=${date1}&date2=${date2}`;
 
